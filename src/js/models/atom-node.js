@@ -14,9 +14,9 @@ export default class AtomNode {
 
   render() {
     if (!this._rendered) {
-      let {atomOptions: options, env, model: { value, payload } } = this;
+      let {atomOptions: options, env, model: { value, payload }, editor } = this;
       // cache initial render
-      this._rendered = this.atom.render({options, env, value, payload});
+      this._rendered = this.atom.render({options, env, value, payload, editor});
     }
 
     this._validateAndAppendRenderResult(this._rendered);

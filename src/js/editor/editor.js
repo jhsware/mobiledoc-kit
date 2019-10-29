@@ -746,6 +746,29 @@ class Editor {
     this.addCallback(CALLBACK_QUEUES.POST_DID_CHANGE, callback);
   }
 
+  addEventListener(event, callback) {
+    if (event === 'postDidChange') {
+      this.addCallback(CALLBACK_QUEUES.POST_DID_CHANGE, callback);
+      return callback;
+    } else if (event === 'onTextInput') {
+      const name = Math.random().toString();
+      this._eventManager.registerInputHandler({
+        name,
+        match: /.*/,
+        run: (editor, matches) => callback(editor, matches.input.slice(-1))
+      });
+      return name;
+    }
+  }
+
+  removeEventListener(event, callback) {
+    if (event === 'postDidChange') {
+      this.removeCallback(CALLBACK_QUEUES.POST_DID_CHANGE, callback);
+    } else if (event === 'onTextInput') {
+      this._eventManager.unregisterInputHandler(callback);
+    }
+  }
+
   /**
    * Register a handler that will be invoked by the editor after the user enters
    * matching text.
@@ -1142,6 +1165,10 @@ class Editor {
 
   addCallback(...args) {
     this._callbacks.addCallback(...args);
+  }
+
+  removeCallback(...args) {
+    this._callbacks.removeCallback(...args);
   }
 
   addCallbackOnce(...args) {

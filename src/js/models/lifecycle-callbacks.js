@@ -30,6 +30,14 @@ export default class LifecycleCallbacks {
     this._getQueue(queueName).push(callback);
   }
 
+  removeCallback(queueName, callback) {
+    let queue = this._getQueue(queueName);
+    let index = queue.indexOf(callback);
+    if (index !== -1) {
+      queue.splice(index, 1);
+    }
+  }
+
   _scheduleCallbackForRemoval(queueName, callback) {
     this.removalQueues[queueName].push(callback);
   }
