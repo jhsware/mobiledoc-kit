@@ -8,6 +8,10 @@ const MUTATION = {
   CHARACTER_DATA: 'characterData'
 };
 
+function DummyMutationObserver () {}
+DummyMutationObserver.prototype.observe = function () {};
+DummyMutationObserver.prototype.disconnect = function () {};
+
 export default class MutationHandler {
   constructor(editor) {
     this.editor     = editor;
@@ -15,9 +19,15 @@ export default class MutationHandler {
     this.renderTree = null;
     this._isObserving = false;
 
-    this._observer = new MutationObserver((mutations) => {
-      this._handleMutations(mutations);
-    });
+
+    if (typeof MutationObserver !== 'undefined') {
+      this._observer = new MutationObserver((mutations) => {
+        this._handleMutations(mutations);
+      });
+    } else {
+      // Use dummy for SSR etc.
+      this._observer = new DummyMutationObserver();
+    }
   }
 
   init() {
