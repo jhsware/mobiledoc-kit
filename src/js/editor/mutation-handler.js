@@ -72,8 +72,8 @@ export default class MutationHandler {
     this.editor._reparsePost();
   }
 
-  reparseSections(sections) {
-    this.editor._reparseSections(sections);
+  reparseSections(sections, noRealChange) {
+    this.editor._reparseSections(sections, noRealChange);
   }
 
   /**
@@ -92,6 +92,46 @@ export default class MutationHandler {
   _handleMutations(mutations) {
     let reparsePost = false;
     let sections = new Set();
+
+    // This is a hack so we don't get lots of didUpdate events when checking cursor position
+    // by adding and removing a tag at caret position.
+    let noRealChange;
+
+    let tmpM = mutations.reduce((prev, curr) => {
+      for (let i = 0; i < prev.length; i++) {
+        let tmp = prev[i];
+        if (tmp.target === curr.target) {
+          tmp.addedNodes = tmp.addedNodes.concat(Array.from(curr.addedNodes).map((a) => a.outerHTML));
+          tmp.removedNodes = tmp.removedNodes.concat(Array.from(curr.removedNodes).map((a) => a.outerHTML));
+          return prev;
+        }
+      }
+      prev.push({
+        target: curr.target,
+        addedNodes: Array.from(curr.addedNodes).map((a) => a.outerHTML),
+        removedNodes: Array.from(curr.removedNodes).map((a) => a.outerHTML)
+      });
+      return prev;
+    }, []);
+    tmpM = tmpM.filter((item) => {
+      let tmpRem = item.removedNodes;
+      const delta = item.addedNodes.reduce((prev, curr) => {
+        let foundMatch = false;
+        tmpRem = tmpRem.filter((rem) => {
+          if (!foundMatch && curr === rem) {
+            foundMatch = true;
+            return false;
+          }
+          return true;
+        });
+        return foundMatch ? prev : prev + 1;
+      }, 0);
+      // If we have any removes left we add them to indicate a change will happen
+      return delta + tmpRem.length;
+    });
+    noRealChange = tmpM.length === 0;
+    // End hack
+    
 
     for (let i = 0; i < mutations.length; i++) {
       if (reparsePost) {
@@ -124,7 +164,7 @@ export default class MutationHandler {
       this.reparsePost();
     } else if (sections.length) {
       this.logger.log(`reparse ${sections.length} sections (${mutations.length} mutations)`);
-      this.reparseSections(sections.toArray());
+      this.reparseSections(sections.toArray(), noRealChange);
     }
   }
 
