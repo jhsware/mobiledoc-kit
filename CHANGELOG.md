@@ -1,8 +1,23 @@
+<a name="0.12.5"></a>
+## <small>0.12.5 (2020-08-24)</small>
+
+* Add event listeners to allow catching insertion of atoms (@...) for mentions ([bd2dc88](https://github.com/bustle/mobiledoc-kit/commit/bd2dc88))
+* Allow server-side rendering ([31e4319](https://github.com/bustle/mobiledoc-kit/commit/31e4319))
+* Bump version ([376f07f](https://github.com/bustle/mobiledoc-kit/commit/376f07f))
+* Don't reparse at all when no chages were made ([fec8129](https://github.com/bustle/mobiledoc-kit/commit/fec8129))
+* Don't send update events if the mutations don't amount to an actual change in content ([f9c7476](https://github.com/bustle/mobiledoc-kit/commit/f9c7476))
+* Make text selection test asynchronous 🔥 ([192dcb6](https://github.com/bustle/mobiledoc-kit/commit/192dcb6))
+* Restrict dom selector assertion to the qunit fixture element 🦨 ([2e2d60a](https://github.com/bustle/mobiledoc-kit/commit/2e2d60a))
+* Use wait helper instead of setTimeout in async tests ([b547d4d](https://github.com/bustle/mobiledoc-kit/commit/b547d4d))
+
+
+
 <a name="0.12.3"></a>
 ## <small>0.12.3 (2020-01-28)</small>
 
 * built website from 5fe628e863773b7681954646309d7a6edc5e0523 ([7b87e74](https://github.com/bustle/mobiledoc-kit/commit/7b87e74))
 * In the 0.3.2 renderer, omit empty section attribute arrays 🍭 ([c115337](https://github.com/bustle/mobiledoc-kit/commit/c115337))
+* v0.12.3 ([2cad059](https://github.com/bustle/mobiledoc-kit/commit/2cad059))
 
 
 
