@@ -442,7 +442,7 @@ class Editor {
     this._postDidChange();
   }
 
-  _reparseSections(sections=[], noRealChange) {
+  _reparseSections(sections=[]) {
     let currentRange;
     sections.forEach(section => {
       this._parser.reparseSection(section, this._renderTree);
@@ -467,9 +467,7 @@ class Editor {
 
     this.runCallbacks(CALLBACK_QUEUES.DID_REPARSE);
 
-    if (!noRealChange) {
-      this._postDidChange();
-    }
+    this._postDidChange();
   }
 
   // FIXME this should be able to be removed now -- if any sections are detached,

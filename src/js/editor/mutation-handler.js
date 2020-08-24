@@ -72,8 +72,8 @@ export default class MutationHandler {
     this.editor._reparsePost();
   }
 
-  reparseSections(sections, noRealChange) {
-    this.editor._reparseSections(sections, noRealChange);
+  reparseSections(sections) {
+    this.editor._reparseSections(sections);
   }
 
   /**
@@ -163,8 +163,12 @@ export default class MutationHandler {
       this.logger.log(`reparsePost (${mutations.length} mutations)`);
       this.reparsePost();
     } else if (sections.length) {
-      this.logger.log(`reparse ${sections.length} sections (${mutations.length} mutations)`);
-      this.reparseSections(sections.toArray(), noRealChange);
+      // Don't reparse if there weren't any changes. It causes exessive calls to update
+      // and deestroys the undo history by causing lots of snapshots
+      if (!noRealChange) {
+        this.logger.log(`reparse ${sections.length} sections (${mutations.length} mutations)`);
+        this.reparseSections(sections.toArray());
+      }
     }
   }
 
