@@ -28,7 +28,7 @@ var buildOptions = {
 
 var testTree = testTreeBuilder.build({ libDirName: "src" });
 testTree = jquery.build(testTree, "/tests/jquery");
-testTree = new BroccoliLiveReload(testTree, { target: "index.html" });
+// testTree = new BroccoliLiveReload(testTree, { target: "index.html" });
 
 var testBuilder = new broccoli.Builder(testTree);
 
