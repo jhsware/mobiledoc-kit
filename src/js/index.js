@@ -22,5 +22,5 @@ export function registerGlobal(global) {
   global.Mobiledoc = Mobiledoc;
 }
 
-export { Editor, UI, Range, Position, MOBILEDOC_VERSION };
+export { Editor, UI, ImageCard, Range, Position, Error, VERSION, MOBILEDOC_VERSION };
 export default Mobiledoc;
